@@ -49,9 +49,6 @@ a {
   }
 }
 
-h3 {
-  @apply text-2xl;
-}
 
 button.wallet-adapter-button-trigger {
   background: rgb(240, 20, 20);
