@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import TokenSelector1 from "../TokenSelector1/page";
+import TokenSelector1 from "../TokenSelector1/TokenSelector1";
+import TokenSelector2 from "../TokenSelector2/TokenSelector2";
 import styles from "./SwapForm.module.css";
 
 const tokenPrices: Record<string, number> = {
@@ -55,7 +56,7 @@ const SwapForm = () => {
         {/* Нижний блок (Buyer или Seller) */}
         <div className={styles.tokenBlock}>
           <span className={styles.label}>{isSelling ? "Buying" : "Selling"}</span>
-          <TokenSelector1 selectedToken={isSelling ? buyToken : sellToken} onSelect={isSelling ? setBuyToken : setSellToken} />
+          <TokenSelector2 selectedToken={isSelling ? buyToken : sellToken} onSelect={isSelling ? setBuyToken : setSellToken} />
           <input
             type="text"
             value={receiveAmount}

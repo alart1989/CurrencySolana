@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import styles from './Swap.module.css';
-import TokenForm from '../components/TokenForm/page';
+import TokenForm from '../components/TokenForm/TokenForm';
 
 const Send = () => {
   return (

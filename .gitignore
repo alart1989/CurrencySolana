@@ -41,3 +41,6 @@ yarn-error.log*
 next-env.d.ts
 # Игнорируем конфиденциальные файлы
 .env
+
+# игнорируем компонент TokenSelector
+/src/app/components/TokenSelector/page.tsx

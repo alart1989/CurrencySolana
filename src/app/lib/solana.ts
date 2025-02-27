@@ -5,8 +5,7 @@ import {
   } from '@solana/web3.js';
   import {
     createTransferInstruction,
-    getAssociatedTokenAddress,
-    TOKEN_PROGRAM_ID
+    getAssociatedTokenAddress  
   } from '@solana/spl-token';
   import { contractAddress } from '@/app/contracts/contract';
   
@@ -14,7 +13,7 @@ import {
     tokenMintAddress: string, // Адрес токена
     amount: number,
     senderPublicKey: PublicKey,
-    sendTransaction: any
+    sendTransaction: (transaction: Transaction, connection: Connection) => Promise<string>
   ) => {
     const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_RPC_URL!, 'confirmed');
     const mint = new PublicKey(tokenMintAddress);
@@ -26,7 +25,7 @@ import {
       senderATA,       // Откуда (ATA отправителя)
       receiverATA,     // Куда (ATA контракта)
       senderPublicKey, // Кто отправляет
-      amount * 10 ** 1 // Количество токенов (предполагаем, что 6 знаков после запятой)
+      amount * 10 ** 9 // Количество токенов (предполагаем, что 6 знаков после запятой)
     );
   
     // Создаем и подписываем транзакцию
