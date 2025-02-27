@@ -34,3 +34,16 @@
     background-color: darkred; /* Темнее при наведении */
   }
   
+  /* Стили для мобильных устройств */
+@media (max-width: 768px) {
+  .walletButton button {
+    max-width: 120px; /* Еще больше уменьшаем на мобильных */
+    font-size: 0.9rem;
+    padding: 6px 10px;
+  }
+  
+  .disconnectButton {
+    font-size: 0.9rem;
+    padding: 8px 10px;
+  }
+}

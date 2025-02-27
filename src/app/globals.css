@@ -8,7 +8,24 @@
   grid-template-rows: 1fr 1fr; 
   height: 50vh;
 }
+/* Изменяем размер кнопки WalletMultiButton */
+.wallet-adapter-button {
+  font-size: 1rem !important; /* Уменьшаем размер текста */
+  padding: 6px 12px !important; /* Уменьшаем отступы */
+  max-width: 160px !important; /* Ограничиваем ширину */
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important; /* Добавляем "..." если текст не влезает */
+}
 
+/* Стили для мобильных устройств */
+@media (max-width: 760px) {
+  .wallet-adapter-button {
+    font-size: 1rem !important;
+    max-width: 150px !important;
+    padding: 5px 10px !important;
+  }
+}
 
 
 @media (prefers-color-scheme: dark) {

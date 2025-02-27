@@ -142,41 +142,17 @@ a.secondary {
   }
 }
 
-@media (max-width: 600px) {
-  .page {
-    padding: 32px;
-    padding-bottom: 80px;
+@media (max-width: 780px) {
+  .container {
+    flex-direction: column; /* Размещаем элементы друг за другом */
+    height: auto; /* Высота теперь зависит от контента */
   }
 
-  .main {
-    align-items: center;
-  }
-
-  .main ol {
-    text-align: center;
-  }
-
-  .ctas {
-    flex-direction: column;
-  }
-
-  .ctas a {
-    font-size: 14px;
-    height: 40px;
-    padding: 0 16px;
-  }
-
-  a.secondary {
-    min-width: auto;
-  }
-
-  .footer {
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-  }
+  .section {
+    width: 100%; /* Полная ширина */
+    height: auto; /* Высота по содержимому */
 }
-
+}
 @media (prefers-color-scheme: dark) {
   .logo {
     filter: invert();
