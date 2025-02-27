@@ -65,3 +65,15 @@ const TokenSend = ({ onSubmit }: { onSubmit: (tokenAddress: string, amount: numb
 
 export default TokenSend;
 
+
+
+
+
+
+
+
+
+
+/*# env files (can opt-in for committing if needed)
+.env*
+*/
