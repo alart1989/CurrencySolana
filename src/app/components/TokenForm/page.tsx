@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { sendTokensToContract } from '@/app/lib/solana';// Импорт функции для отправки токенов
-import { contractAddress } from '@/app/contracts/contract'; // Импорт адреса контракта
+// import { contractAddress } from '@/app/contracts/contract'; // Импорт адреса контракта
 import { useWallet } from '@solana/wallet-adapter-react';
 import styles from './TokenForm.module.css';
 

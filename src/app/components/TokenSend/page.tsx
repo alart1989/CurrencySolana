@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import styles from './TokenForm.module.css';
+import styles from './TokenSend.module.css';
 
 const isValidSolanaAddress = (address: string) => {
   return /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(address);

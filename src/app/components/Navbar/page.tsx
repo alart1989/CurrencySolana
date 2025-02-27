@@ -23,7 +23,7 @@ const NavBar = () => {
     <div className={styles.walletButton}>
     <WalletMultiButtonDynamic>
           {publicKey
-            ? ${publicKey.toBase58().substring(0, 7)}...
+            ? `${publicKey.toBase58().substring(0, 7)}...`
             : 'Connect Wallet'}
         </WalletMultiButtonDynamic>
         {publicKey && (
@@ -35,5 +35,6 @@ const NavBar = () => {
   </div>
   );
 };
+
 
 export default NavBar;
