@@ -39,8 +39,4 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-# Игнорируем конфиденциальные файлы
-.env
 
-# игнорируем компонент TokenSelector
-/src/app/components/TokenSelector/page.tsx
