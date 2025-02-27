@@ -1,0 +1,36 @@
+/* NavBar.module.css */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    background-color: #d1d5db; /* bg-gray-300 */
+  }
+  
+  .title {
+    font-family: serif;
+    font-size: 2rem;
+    padding: 5px;
+  }
+  
+  .walletButton {
+    display: flex;
+    align-items: center;
+  }
+
+  .disconnectButton {
+    background-color: rgb(15, 15, 15); /* Красная кнопка */
+    color: white; /* Белый текст */
+    border: none;
+    padding: 13px 13px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s;
+    margin-right: 16px; /* Отступ от WalletMultiButton */
+  }
+  
+  .disconnectButton:hover {
+    background-color: darkred; /* Темнее при наведении */
+  }
+  
