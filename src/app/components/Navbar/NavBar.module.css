@@ -4,7 +4,7 @@
     justify-content: space-between;
     padding: 1rem;
     border: 1px solid #ccc;
-    background-color: #d1d5db; /* bg-gray-300 */
+    background-color: #d1d5db; 
   }
   
   .title {
@@ -19,25 +19,25 @@
   }
 
   .disconnectButton {
-    background-color: rgb(15, 15, 15); /* Красная кнопка */
-    color: white; /* Белый текст */
+    background-color: rgb(15, 15, 15);
+    color: white; 
     border: none;
     padding: 13px 13px;
     border-radius: 10px;
     cursor: pointer;
     font-size: 16px;
     transition: background 0.3s;
-    margin-right: 16px; /* Отступ от WalletMultiButton */
+    margin-right: 16px; 
   }
   
   .disconnectButton:hover {
-    background-color: darkred; /* Темнее при наведении */
+    background-color: darkred;
   }
   
   /* Стили для мобильных устройств */
 @media (max-width: 768px) {
   .walletButton button {
-    max-width: 120px; /* Еще больше уменьшаем на мобильных */
+    max-width: 120px; 
     font-size: 0.9rem;
     padding: 6px 10px;
   }

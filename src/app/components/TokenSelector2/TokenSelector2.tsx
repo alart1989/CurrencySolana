@@ -14,7 +14,7 @@ interface TokenSelectorProps {
 }
 
 const tokens: Token[] = [
-  { address: "So11111111111111111111111111111111111111112", logo: "/tokens/solana.png", symbol: "SOL" },
+ 
   { address: "TOKEN_ADDRESS_1", logo: "/tokens/usdc.png", symbol: "USDC" },
   { address: "TOKEN_ADDRESS_2", logo: "/tokens/usdt.png", symbol: "USDT" },
 ];

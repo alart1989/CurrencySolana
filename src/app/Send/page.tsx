@@ -1,11 +1,11 @@
 'use client';
 
 import React from 'react';
-import TokenForm from '../components/TokenForm/TokenForm';
+import TokenTransfer from '../components/TokenTransfer/TokenTransfer';
 
 const Send = () => {
   return (
-    <TokenForm  />
+    <TokenTransfer  />
   );
 };
 

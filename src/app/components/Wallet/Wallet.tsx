@@ -1,15 +1,8 @@
 'use client';
 
-import {
-  WalletProvider,
-  ConnectionProvider,
-} from '@solana/wallet-adapter-react';
+import { WalletProvider, ConnectionProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
-import {
-  AlphaWalletAdapter,
-  LedgerWalletAdapter,
-  SolflareWalletAdapter,
-} from '@solana/wallet-adapter-wallets';
+import { AlphaWalletAdapter, LedgerWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets';
 import { FC, useMemo } from 'react';
 import '@solana/wallet-adapter-react-ui/styles.css';
 
@@ -27,9 +20,9 @@ export const Wallet: FC<Props> = ({ children }) => {
 
   const wallets = useMemo(
     () => [
-      new SolflareWalletAdapter(),
+    /*  new SolflareWalletAdapter(),
       new AlphaWalletAdapter(),
-      new LedgerWalletAdapter(),
+      new LedgerWalletAdapter(),*/
     ],
     []
   );

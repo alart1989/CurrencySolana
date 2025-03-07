@@ -2,7 +2,7 @@
 
 import styles from "./page.module.css";
 import Send from "./Send/page";
-import Swap2 from "./Swap2/page";
+import Swap from "./Swap/page";
 
 
     export default function Home() {
@@ -12,7 +12,7 @@ import Swap2 from "./Swap2/page";
             <Send />
           </div>
           <div className={styles.section}>
-            <Swap2 />
+            <Swap />
           </div>
         </main>
       );
