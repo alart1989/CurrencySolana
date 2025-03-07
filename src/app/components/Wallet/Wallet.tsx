@@ -2,7 +2,6 @@
 
 import { WalletProvider, ConnectionProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
-import { AlphaWalletAdapter, LedgerWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets';
 import { FC, useMemo } from 'react';
 import '@solana/wallet-adapter-react-ui/styles.css';
 
@@ -12,8 +11,6 @@ type Props = {
 };
 
 export const Wallet: FC<Props> = ({ children }) => {
-  //input your RPC as your endpoint value
- // const endpoint = 'https://api-devnet.helius.xyz';
 
   // Получаем endpoint из .env
   const endpoint = process.env.NEXT_PUBLIC_SOLANA_RPC_URL as string;

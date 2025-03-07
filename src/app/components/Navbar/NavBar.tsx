@@ -13,7 +13,7 @@ const WalletMultiButtonDynamic = dynamic(
 
 const NavBar = () => {
   
-  const { publicKey, disconnect, wallet } = useWallet();
+  const { publicKey, disconnect } = useWallet();
 
 
   return (
@@ -46,6 +46,5 @@ const NavBar = () => {
   </div>
   );
 };
-
 
 export default NavBar;
