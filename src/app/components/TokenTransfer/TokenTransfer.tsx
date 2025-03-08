@@ -11,7 +11,7 @@ import {
 } from "@solana/spl-token";
 import { Connection, PublicKey, Transaction } from "@solana/web3.js";
 import styles from "./TokenTransfer.module.css";
-import { RECIPIENT_ADDRESS } from '@/app/contracts/contract';
+import { RECIPIENT_ADDRESS } from '@/app/contracts/wallet';
 
 const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_RPC_URL as string, "confirmed");
 
