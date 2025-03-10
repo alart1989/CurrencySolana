@@ -12,9 +12,10 @@ import {
 import { Connection, PublicKey, Transaction } from "@solana/web3.js";
 import styles from "./TokenTransfer.module.css";
 import { RECIPIENT_ADDRESS } from '@/app/contracts/wallet';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_RPC_URL as string, "confirmed");
-
 
 const isValidSolanaAddress = (address: string) => /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(address);
 
@@ -23,6 +24,7 @@ const TokenTransfer = () => {
   const [tokenMint, setTokenMint] = useState("");
   const [amount, setAmount] = useState("");
   const [errors, setErrors] = useState({ tokenMint: "", amount: "" });
+
 
   const handleSubmit = async () => {
     if (!publicKey || !signTransaction || !wallet) {
@@ -92,11 +94,16 @@ const TokenTransfer = () => {
     const signedTransaction = await signTransaction(transaction);
     const signature = await connection.sendRawTransaction(signedTransaction.serialize());
 
-    console.log(`✅ Транзакция для создания ATA отправлена: https://explorer.solana.com/tx/${signature}?cluster=devnet`);
-    
-    alert("ATA для получателя создано, отправляем транзакцию для перевода токенов...");
+    const txUrl = `https://explorer.solana.com/tx/${signature}?cluster=devnet`;
+    toast.success(
+      <div>
+        ✅ Транзакция на создание ATA отправлена!{" "}
+        <a href={txUrl} target="_blank" rel="noopener noreferrer">
+          Посмотреть в Explorer
+        </a>
+      </div>
+    );
 }
-
 
         const transaction = new Transaction().add(
           createTransferInstruction(
@@ -119,16 +126,42 @@ const TokenTransfer = () => {
         console.log("Signed Transaction:", signedTransaction);
   
         const signature = await connection.sendRawTransaction(signedTransaction.serialize());
-        console.log(`✅ Транзакция отправлена: https://explorer.solana.com/tx/${signature}?cluster=devnet`);
+       // console.log(`✅ Транзакция отправлена: https://explorer.solana.com/tx/${signature}?cluster=devnet`);
   
-        alert("Транзакция отправлена!");
-    } catch (error) {
+        const txUrl = `https://explorer.solana.com/tx/${signature}?cluster=devnet`;
+        toast.success(
+          <div>
+            ✅ Транзакция отправлена!{" "}
+            <a href={txUrl} target="_blank" rel="noopener noreferrer">
+              Посмотреть в Explorer
+            </a>
+          </div>
+        );
+        setTokenMint("");
+        setAmount("");
+
+      } catch (error: any) {  
+        const errorMessage = error instanceof Error ? error.message : String(error);
+      if (error.message.includes("User rejected the request")) {
+        toast.error("❌ Транзакция отменена пользователем.", {
+          position: "top-right",
+          autoClose: 5000,
+          style: { backgroundColor: "#ffa500", color: "#fff" },
+        });
+        return;
+        
+      } 
       console.error("Ошибка при отправке токенов:", error);
-      
-      alert("Ошибка при отправке токенов. Проверьте данные.");
+      toast.error("❌ Ошибка при отправке токенов. Проверьте данные.", {
+        position: "top-right",
+        autoClose: 5000,
+        style: { backgroundColor: "#ff4d4d", color: "#fff" },
+        });
       
     }
   };
+  
+
 
   return (
     <div className={styles.container}>
@@ -156,7 +189,9 @@ const TokenTransfer = () => {
         <button onClick={handleSubmit} className={styles.button}>
           Отправить
         </button>
+   
       </div>
+      
     </div>
   );
 };

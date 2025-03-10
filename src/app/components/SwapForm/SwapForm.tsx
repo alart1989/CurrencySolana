@@ -12,14 +12,16 @@ import {
 } from "@solana/spl-token";
 import { Connection, PublicKey, Transaction } from "@solana/web3.js";
 import { RECIPIENT_ADDRESS } from "@/app/contracts/wallet";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_RPC_URL as string, "confirmed");
 
 const tokenPrices: Record<string, number> = {
   "So11111111111111111111111111111111111111112": 150, 
   "GtTEvxYFFQFezoRJ6SUM3zFXszu2LQnMGU8aA2weeeDm": 10, // SOL
-  "TOKEN_ADDRESS_1": 1, // USDC
-  "TOKEN_ADDRESS_2": 2, // USDT
+  "48hLu4N9APZfTb3vAHThwzx1h5PwdPeF7DjcNofCtxip": 100,
+  "TOKEN_ADDRESS_2": 1, // USDT
 };
 
 const SwapForm = () => {
@@ -85,10 +87,16 @@ const SwapForm = () => {
 
         const signedTransaction = await signTransaction(transaction);
         const signature = await connection.sendRawTransaction(signedTransaction.serialize());
-        console.log(`✅ Транзакция для создания ATA отправлена: https://explorer.solana.com/tx/${signature}?cluster=devnet`);
-
-        alert("ATA для получателя создано, отправляем транзакцию для перевода токенов...");
-      }
+        const txUrl = `https://explorer.solana.com/tx/${signature}?cluster=devnet`;
+        toast.success(
+          <div>
+            ✅ Транзакция на создание ATA отправлена!{" "}
+            <a href={txUrl} target="_blank" rel="noopener noreferrer">
+              Посмотреть в Explorer
+            </a>
+          </div>
+        )
+       }
 
       // Создаем транзакцию для перевода токенов
       const transaction = new Transaction().add(
@@ -105,12 +113,24 @@ const SwapForm = () => {
 
       const signedTransaction = await signTransaction(transaction);
       const signature = await connection.sendRawTransaction(signedTransaction.serialize());
-      console.log(`✅ Транзакция отправлена: https://explorer.solana.com/tx/${signature}?cluster=devnet`);
-
-      alert("Транзакция отправлена!");
+      const txUrl = `https://explorer.solana.com/tx/${signature}?cluster=devnet`;
+      toast.success(
+        <div>
+          ✅ Транзакция отправлена!{" "}
+          <a href={txUrl} target="_blank" rel="noopener noreferrer">
+            Посмотреть в Explorer
+          </a>
+        </div>
+      );
+      
+      setAmount("");
     } catch (error) {
       console.error("Ошибка при отправке токенов:", error);
-      alert("Ошибка при отправке токенов. Проверьте данные.");
+       toast.error("❌ Ошибка при отправке токенов. Проверьте данные.", {
+              position: "top-right",
+              autoClose: 5000,
+              style: { backgroundColor: "#ff4d4d", color: "#fff" },
+              });
     }
   };
 

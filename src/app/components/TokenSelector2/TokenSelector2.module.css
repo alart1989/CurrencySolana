@@ -1,4 +1,88 @@
 .tokenSelector {
+  position: relative;
+  display: inline-block;
+}
+
+.select {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background-color: #1e1e1e;
+  color: white;
+  border: 1px solid #444;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.tokenLogo {
+  border-radius: 50%;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 250px;
+  background-color: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+.tokenOption {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.tokenOption:hover {
+  background-color: #3a3a3a;
+}
+
+.tokenInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.tokenSymbol {
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+}
+
+.tokenFullName {
+  font-size: 12px;
+  color: #aaa;
+}
+
+.tokenAddress {
+  font-size: 12px;
+  color: #f39c12;
+  cursor: pointer;
+}
+
+.tokenAddress:hover {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+
+
+
+
+
+/*.tokenSelector {
   display: flex;
   align-items: center;
   width: 100%;
@@ -27,4 +111,4 @@
 .tokenLogo {
   width: 100%;
   height: 100%;
-}
+}*/

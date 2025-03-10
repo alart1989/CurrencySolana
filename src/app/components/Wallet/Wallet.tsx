@@ -23,6 +23,7 @@ export const Wallet: FC<Props> = ({ children }) => {
     ],
     []
   );
+  
 
   return (
     <ConnectionProvider endpoint={endpoint}>

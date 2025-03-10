@@ -13,8 +13,7 @@ const WalletMultiButtonDynamic = dynamic(
 
 const NavBar = () => {
   
-  const { publicKey, disconnect } = useWallet();
-
+  const { publicKey } = useWallet();
 
   return (
     <div className={styles.navbar}>
@@ -23,25 +22,9 @@ const NavBar = () => {
     </div>
     <div className={styles.walletButton}>
     <WalletMultiButtonDynamic>
-          {publicKey
-            ? `${publicKey.toBase58().substring(0, 7)}...`
-            : 'Connect Wallet'}
+    {publicKey ? `${publicKey.toBase58().substring(0, 7)}...` : 'Connect Wallet'}
         </WalletMultiButtonDynamic>
-        {publicKey && (
-  <button
-    className={styles.disconnectButton}
-    onClick={async () => {
-      try {
-        await disconnect();
-        console.log('Кошелек успешно отключен');
-      } catch (error) {
-        console.error('Ошибка при отключении кошелька:', error);
-      }
-    }}
-  >
-    Отключиться
-  </button>
-        )}
+     
     </div>
   </div>
   );
