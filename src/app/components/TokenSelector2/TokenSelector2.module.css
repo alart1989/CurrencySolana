@@ -1,6 +1,9 @@
 .tokenSelector {
   position: relative;
   display: inline-block;
+  justify-content: flex-start; 
+  text-align: left;
+  width: 100%;
 }
 
 .select {
@@ -50,6 +53,9 @@
 .tokenInfo {
   display: flex;
   flex-direction: column;
+  justify-content: flex-start; 
+  text-align: left;
+  width: 100%; 
 }
 
 .tokenSymbol {

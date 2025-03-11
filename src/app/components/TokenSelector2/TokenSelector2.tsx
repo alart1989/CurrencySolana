@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import styles from "./TokenSelector2.module.css";
+import { toast } from "react-toastify";
 
 interface Token {
   address: string;
@@ -16,7 +17,7 @@ interface TokenSelectorProps {
 
 const tokens: Token[] = [
   {
-    address: "TOKEN_ADDRESS_2",
+    address: "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
     logo: "/tokens/usdt.png",
     symbol: "USDT",
     fullName: "Tether USD",
@@ -28,16 +29,16 @@ const tokens: Token[] = [
     fullName: "Solana",
   },
   {
-    address: "48hLu4N9APZfTb3vAHThwzx1h5PwdPeF7DjcNofCtxip",
-    logo: "/tokens/banan.png",
-    symbol: "BANAN",
-    fullName: "Banana Token",
+    address: "xxxxa1sKNGwFtw2kFn8XauW9xq8hBZ5kVtcSesTT9fW",
+    logo: "/tokens/SLIM.png",
+    symbol: "SLIM",
+    fullName: "Solanium",
   },
-  {
-    address: "GtTEvxYFFQFezoRJ6SUM3zFXszu2LQnMGU8aA2weeeDm",
-    logo: "/tokens/apple.png",
-    symbol: "APPLE",
-    fullName: "Apple Token",
+  {  
+    address: "6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN",
+    logo: "/tokens/TRUMP.png",
+    symbol: "TRUMP",
+    fullName: "OFFICIAL TRUMP",
   },
 ];
 
@@ -51,7 +52,7 @@ const TokenSelector2: React.FC<TokenSelectorProps> = ({
   // Функция копирования в буфер
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
-    alert("Адрес токена скопирован!");
+    toast.success("Адрес токена скопирован!");
   };
 
   return (

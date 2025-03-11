@@ -16,9 +16,9 @@ interface TokenSelectorProps {
 
 const tokens: Token[] = [
   { address: "So11111111111111111111111111111111111111112", logo: "/tokens/solana.png", symbol: "SOL" },
-  { address: "GtTEvxYFFQFezoRJ6SUM3zFXszu2LQnMGU8aA2weeeDm", logo: "/tokens/apple.png", symbol: "APPLE" },
-  { address: "48hLu4N9APZfTb3vAHThwzx1h5PwdPeF7DjcNofCtxip", logo: "/tokens/banan.png", symbol: "BANAN" },
-  { address: "TOKEN_ADDRESS_2", logo: "/tokens/usdt.png", symbol: "USDT" },
+  { address: "6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN", logo: "/tokens/TRUMP.png", symbol: "TRUMP" },
+  { address: "xxxxa1sKNGwFtw2kFn8XauW9xq8hBZ5kVtcSesTT9fW", logo: "/tokens/SLIM.png", symbol: "BANAN" },
+  { address: "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", logo: "/tokens/usdt.png", symbol: "USDT" },
 ];
 
 const TokenSelector1: React.FC<TokenSelectorProps> = ({ selectedToken, onSelect }) => {

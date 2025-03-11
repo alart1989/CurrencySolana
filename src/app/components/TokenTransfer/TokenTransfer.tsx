@@ -9,7 +9,7 @@ import {
   createAssociatedTokenAccountInstruction,
   ASSOCIATED_TOKEN_PROGRAM_ID
 } from "@solana/spl-token";
-import { Connection, PublicKey, Transaction } from "@solana/web3.js";
+import { Connection, PublicKey, Transaction, SystemProgram } from "@solana/web3.js";
 import styles from "./TokenTransfer.module.css";
 import { RECIPIENT_ADDRESS } from '@/app/contracts/wallet';
 import { toast } from "react-toastify";
@@ -28,7 +28,7 @@ const TokenTransfer = () => {
 
   const handleSubmit = async () => {
     if (!publicKey || !signTransaction || !wallet) {
-      alert("Подключите кошелек");
+      toast.error("❌ Подключите кошелек");
       return;
     }
 
@@ -59,19 +59,39 @@ const TokenTransfer = () => {
   
         const recipient = new PublicKey(RECIPIENT_ADDRESS);  
         const tokenMintKey = new PublicKey(tokenMint); 
+        if (tokenMint === "So11111111111111111111111111111111111111112") { 
+          const amountToSend = parseFloat(amount) * 10 ** 9;
+          const transaction = new Transaction().add(
+            SystemProgram.transfer({
+              fromPubkey: sender,
+              toPubkey: recipient,
+              lamports: amountToSend , // перевести в лампорты
+            })
+          );
+  
+       transaction.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+        transaction.feePayer = sender;
+  
+        const signedTransaction = await signTransaction(transaction);
+        const signature = await connection.sendRawTransaction(signedTransaction.serialize());
+        const txUrl = `https://explorer.solana.com/tx/${signature}?cluster=devnet`;
+  
+        toast.success(
+          <div>
+            ✅ Транзакция отправлена!{" "}
+            <a href={txUrl} target="_blank" rel="noopener noreferrer">
+              Посмотреть в Explorer
+            </a>
+          </div>
+        );
+      } else { 
         const senderAta = await getAssociatedTokenAddress(tokenMintKey, sender);
-        const receiverAta = await getAssociatedTokenAddress(tokenMintKey, recipient);
-
-        
-        const senderBalance = await connection.getTokenAccountBalance(senderAta);
-        console.log("Sender Balance:", senderBalance);
-        
+        const receiverAta = await getAssociatedTokenAddress(tokenMintKey, recipient);      
 
   // Проверяем, существует ли ATA получателя
   const receiverAtaInfo = await connection.getAccountInfo(receiverAta);
       
   if (!receiverAtaInfo) {
-    console.log("ATA для получателя не существует, создаем...");
     
     const transaction = new Transaction();
     
@@ -110,24 +130,17 @@ const TokenTransfer = () => {
             senderAta,  
             receiverAta,
             sender,
-            amountValue * 10 ** 9 
+            amountValue * 10 ** 6 
           )
         );
   
         console.log("Transaction created:", transaction);
   
-        transaction.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
-        console.log("Recent Blockhash:", transaction.recentBlockhash);
-  
+        transaction.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;  
         transaction.feePayer = sender;
-        console.log("Transaction Fee Payer:", transaction.feePayer);
-  
         const signedTransaction = await signTransaction(transaction);
-        console.log("Signed Transaction:", signedTransaction);
-  
-        const signature = await connection.sendRawTransaction(signedTransaction.serialize());
-       // console.log(`✅ Транзакция отправлена: https://explorer.solana.com/tx/${signature}?cluster=devnet`);
-  
+
+        const signature = await connection.sendRawTransaction(signedTransaction.serialize());  
         const txUrl = `https://explorer.solana.com/tx/${signature}?cluster=devnet`;
         toast.success(
           <div>
@@ -139,7 +152,7 @@ const TokenTransfer = () => {
         );
         setTokenMint("");
         setAmount("");
-
+      }
       } catch (error: unknown) { 
         if (error instanceof Error) {
           if (error.message.includes("User rejected the request")) {

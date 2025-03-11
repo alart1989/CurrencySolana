@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import TokenSelector1 from "../TokenSelector1/TokenSelector1";
 import TokenSelector2 from "../TokenSelector2/TokenSelector2";
 import styles from "./SwapForm.module.css";
 import { useWallet } from "@solana/wallet-adapter-react";
@@ -10,24 +9,25 @@ import {
   TOKEN_PROGRAM_ID,
   ASSOCIATED_TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
-import { Connection, PublicKey, Transaction } from "@solana/web3.js";
+import { Connection, PublicKey, Transaction, SystemProgram } from "@solana/web3.js";
 import { RECIPIENT_ADDRESS } from "@/app/contracts/wallet";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+
 const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_RPC_URL as string, "confirmed");
 
 const tokenPrices: Record<string, number> = {
-  "So11111111111111111111111111111111111111112": 150, 
-  "GtTEvxYFFQFezoRJ6SUM3zFXszu2LQnMGU8aA2weeeDm": 10, // SOL
-  "48hLu4N9APZfTb3vAHThwzx1h5PwdPeF7DjcNofCtxip": 100,
-  "TOKEN_ADDRESS_2": 1, // USDT
+  "So11111111111111111111111111111111111111112": 120, // Sol
+  "6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN": 10, // TRUMP
+  "xxxxa1sKNGwFtw2kFn8XauW9xq8hBZ5kVtcSesTT9fW": 0.05, // SLIM
+  "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB": 1, // USDT
 };
 
 const SwapForm = () => {
   const { publicKey, signTransaction, wallet } = useWallet();
   const [sellToken, setSellToken] = useState("So11111111111111111111111111111111111111112");
-  const [buyToken, setBuyToken] = useState("TOKEN_ADDRESS_2");
+  const [buyToken, setBuyToken] = useState("Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB");
   const [amount, setAmount] = useState("");
   const [receiveAmount, setReceiveAmount] = useState("");
 
@@ -45,14 +45,14 @@ const SwapForm = () => {
   const handleSendTokens = async () => {
     // Проверяем, есть ли подключенный кошелек
     if (!publicKey || !signTransaction || !wallet) {
-      alert("Подключите кошелек");
+      toast.error("❌ Подключите кошелек");
       return;
     }
 
     // Проверяем правильность введенной суммы
     const amountToSend = parseFloat(amount);
     if (isNaN(amountToSend) || amountToSend <= 0) {
-      alert("Введите правильную сумму для отправки.");
+      toast.error("❌Введите правильную сумму для отправки.");
       return;
     }
 
@@ -60,11 +60,49 @@ const SwapForm = () => {
       const sender = publicKey;
       const recipient = new PublicKey(RECIPIENT_ADDRESS);  // Замените на нужный адрес получателя
       const tokenMintKey = new PublicKey(sellToken); 
-      const senderAta = await getAssociatedTokenAddress(tokenMintKey, sender);
-      const receiverAta = await getAssociatedTokenAddress(tokenMintKey, recipient);
 
-      const senderBalance = await connection.getTokenAccountBalance(senderAta);
-      console.log("Sender Balance:", senderBalance);
+      if (sellToken === "So11111111111111111111111111111111111111112") {  // Это SOL
+        const transaction = new Transaction().add(
+          SystemProgram.transfer({
+            fromPubkey: sender,
+            toPubkey: recipient,
+            lamports: amountToSend * 10 ** 9, // перевести в лампорты
+          })
+        );
+
+     transaction.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+      transaction.feePayer = sender;
+
+      const signedTransaction = await signTransaction(transaction);
+      const signature = await connection.sendRawTransaction(signedTransaction.serialize());
+      const txUrl = `https://explorer.solana.com/tx/${signature}?cluster=devnet`;
+
+      toast.success(
+        <div>
+          ✅ Транзакция отправлена!{" "}
+          <a href={txUrl} target="_blank" rel="noopener noreferrer">
+            Посмотреть в Explorer
+          </a>
+        </div>
+      );
+    } else { 
+   // Для токенов проверяем и создаем ATA
+   const senderAta = await getAssociatedTokenAddress(tokenMintKey, sender);
+   console.log("Баланс отправителя:", senderAta);
+
+   const senderBalance = await connection.getTokenAccountBalance(senderAta);
+   console.log("Баланс отправителя:", senderBalance);
+
+   if (!senderBalance.value || parseFloat(senderBalance.value.amount) < amountToSend) {
+     alert("Недостаточно токенов на кошельке");
+     return;
+   }
+   
+      const receiverAta = await getAssociatedTokenAddress(tokenMintKey, recipient);
+ 
+if (!senderBalance.value) {
+  console.log("ATA не существует!");
+}
 
       // Проверяем, существует ли ATA получателя
       const receiverAtaInfo = await connection.getAccountInfo(receiverAta);
@@ -73,12 +111,12 @@ const SwapForm = () => {
 
         const transaction = new Transaction();
         const createAtaInstruction = createAssociatedTokenAccountInstruction(
-          sender,              // Платежный адрес отправителя
-          receiverAta,         // Платежный адрес получателя
-          recipient,           // Адрес получателя
-          tokenMintKey,        // Адрес токена
-          TOKEN_PROGRAM_ID,    // Программа токенов Solana
-          ASSOCIATED_TOKEN_PROGRAM_ID // Программа создания ATA
+          sender,              
+          receiverAta,         
+          recipient,          
+          tokenMintKey,        
+          TOKEN_PROGRAM_ID, 
+          ASSOCIATED_TOKEN_PROGRAM_ID 
         );
 
         transaction.add(createAtaInstruction);
@@ -101,10 +139,10 @@ const SwapForm = () => {
       // Создаем транзакцию для перевода токенов
       const transaction = new Transaction().add(
         createTransferInstruction(
-          senderAta,  // Отправитель
-          receiverAta, // Получатель
-          sender,     // Публичный ключ отправителя
-          amountToSend * 10 ** 9 // Конвертируем сумму в минимальную единицу токенов (например, для SOL это 10^9)
+          senderAta, 
+          receiverAta, 
+          sender,     
+          amountToSend * 10 ** 6 
         )
       );
 
@@ -124,6 +162,7 @@ const SwapForm = () => {
       );
       
       setAmount("");
+    }
     } catch (error) {
       console.error("Ошибка при отправке токенов:", error);
        toast.error("❌ Ошибка при отправке токенов. Проверьте данные.", {
@@ -139,7 +178,7 @@ const SwapForm = () => {
       <div className={styles.swapBox}>
         <div className={styles.tokenBlock}>
           <span className={styles.label}>Selling</span>
-          <TokenSelector1 selectedToken={sellToken} onSelect={setSellToken} />
+          <TokenSelector2 selectedToken={sellToken} onSelect={setSellToken} />
           <input
             type="text"
             placeholder="0.00"
@@ -164,96 +203,4 @@ const SwapForm = () => {
 };
 
 export default SwapForm;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*import { useState, useEffect } from "react";
-import TokenSelector1 from "../TokenSelector1/TokenSelector1";
-import TokenSelector2 from "../TokenSelector2/TokenSelector2";
-import styles from "./SwapForm.module.css";
-
-// Примерные цены для токенов
-const tokenPrices: Record<string, number> = {
-  "So11111111111111111111111111111111111111112": 150, 
-  "GtTEvxYFFQFezoRJ6SUM3zFXszu2LQnMGU8aA2weeeDm": 10, // SOL
-  "TOKEN_ADDRESS_1": 1, // USDC
-  "TOKEN_ADDRESS_2": 2, // USDT
-};
-
-// Функция для отправки токенов
-const sendTokens = (tokenMintAddress: string, amount: number) => {
-  console.log(`Sending ${amount} tokens of ${tokenMintAddress}`);
-  // Реализуйте логику отправки токенов сюда
-};
-
-const SwapForm2 = () => {
-  const [sellToken, setSellToken] = useState("So11111111111111111111111111111111111111112");
-  const [buyToken, setBuyToken] = useState("TOKEN_ADDRESS_2");
-  const [amount, setAmount] = useState("");
-  const [receiveAmount, setReceiveAmount] = useState("");
-
-  useEffect(() => {
-    if (!amount) {
-      setReceiveAmount("");
-      return;
-    }
-    const sellPrice = tokenPrices[sellToken] || 1;
-    const buyPrice = tokenPrices[buyToken] || 1;
-    setReceiveAmount(((parseFloat(amount) * sellPrice) / buyPrice).toFixed(2));
-  }, [amount, sellToken, buyToken]);
-
-  const handleSendTokens = () => {
-    // Отправка токенов с учетом выбранного токена и суммы
-    const amountToSend = parseFloat(amount);
-    if (isNaN(amountToSend) || amountToSend <= 0) {
-      alert("Введите правильную сумму для отправки.");
-      return;
-    }
-    sendTokens(sellToken, amountToSend);
-  };
-
-  return (
-    <div className={styles.container}>
-      <div className={styles.swapBox}>
-        <div className={styles.tokenBlock}>
-          <span className={styles.label}>Selling</span>
-          <TokenSelector1 selectedToken={sellToken} onSelect={setSellToken} />
-          <input
-            type="text"
-            placeholder="0.00"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value.replace(/[^0-9.]/g, ''))}
-            className={styles.input}
-          />
-        </div>
-
-        <div className={styles.tokenBlock}>
-          <TokenSelector2 selectedToken={buyToken} onSelect={setBuyToken} />
-          <p className={styles.input}>Вы получите {receiveAmount}</p>
-        </div>
-
-       
-        <button onClick={handleSendTokens} className={styles.button}>
-          Продать
-        </button>
-      </div>
-    </div>
-  );
-};
-
-export default SwapForm2;*/
 
