@@ -140,28 +140,33 @@ const TokenTransfer = () => {
         setTokenMint("");
         setAmount("");
 
-      } catch (error: any) {  
-        const errorMessage = error instanceof Error ? error.message : String(error);
-      if (error.message.includes("User rejected the request")) {
-        toast.error("❌ Транзакция отменена пользователем.", {
-          position: "top-right",
-          autoClose: 5000,
-          style: { backgroundColor: "#ffa500", color: "#fff" },
-        });
-        return;
-        
-      } 
-      console.error("Ошибка при отправке токенов:", error);
-      toast.error("❌ Ошибка при отправке токенов. Проверьте данные.", {
-        position: "top-right",
-        autoClose: 5000,
-        style: { backgroundColor: "#ff4d4d", color: "#fff" },
-        });
-      
-    }
+      } catch (error: unknown) { 
+        if (error instanceof Error) {
+          if (error.message.includes("User rejected the request")) {
+            toast.error("❌ Транзакция отменена пользователем.", {
+              position: "top-right",
+              autoClose: 5000,
+              style: { backgroundColor: "#ffa500", color: "#fff" },
+            });
+            return;
+          }
+          console.error("Ошибка при отправке токенов:", error.message);
+          toast.error("❌ Ошибка при отправке токенов. Проверьте данные.", {
+            position: "top-right",
+            autoClose: 5000,
+            style: { backgroundColor: "#ff4d4d", color: "#fff" },
+          });
+        } else {
+          console.error("Неизвестная ошибка:", error);
+          toast.error("❌ Произошла неизвестная ошибка.", {
+            position: "top-right",
+            autoClose: 5000,
+            style: { backgroundColor: "#ff4d4d", color: "#fff" },
+          });
+        }
   };
   
-
+  }
 
   return (
     <div className={styles.container}>

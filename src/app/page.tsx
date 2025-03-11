@@ -3,7 +3,7 @@
 import styles from "./page.module.css";
 import Send from "./Send/page";
 import Swap from "./Swap/page";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 
