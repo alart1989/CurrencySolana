@@ -58,10 +58,10 @@ const SwapForm = () => {
 
     try {
       const sender = publicKey;
-      const recipient = new PublicKey(RECIPIENT_ADDRESS);  // Замените на нужный адрес получателя
+      const recipient = new PublicKey(RECIPIENT_ADDRESS); 
       const tokenMintKey = new PublicKey(sellToken); 
 
-      if (sellToken === "So11111111111111111111111111111111111111112") {  // Это SOL
+      if (sellToken === "So11111111111111111111111111111111111111112") {  
         const transaction = new Transaction().add(
           SystemProgram.transfer({
             fromPubkey: sender,
@@ -75,7 +75,7 @@ const SwapForm = () => {
 
       const signedTransaction = await signTransaction(transaction);
       const signature = await connection.sendRawTransaction(signedTransaction.serialize());
-      const txUrl = `https://explorer.solana.com/tx/${signature}?cluster=devnet`;
+      const txUrl = `https://explorer.solana.com/tx/${signature}?cluster=${connection}`;
 
       toast.success(
         <div>
@@ -125,7 +125,7 @@ if (!senderBalance.value) {
 
         const signedTransaction = await signTransaction(transaction);
         const signature = await connection.sendRawTransaction(signedTransaction.serialize());
-        const txUrl = `https://explorer.solana.com/tx/${signature}?cluster=devnet`;
+        const txUrl = `https://explorer.solana.com/tx/${signature}?cluster=${connection}`;
         toast.success(
           <div>
             ✅ Транзакция на создание ATA отправлена!{" "}
@@ -151,7 +151,7 @@ if (!senderBalance.value) {
 
       const signedTransaction = await signTransaction(transaction);
       const signature = await connection.sendRawTransaction(signedTransaction.serialize());
-      const txUrl = `https://explorer.solana.com/tx/${signature}?cluster=devnet`;
+      const txUrl = `https://explorer.solana.com/tx/${signature}?cluster=${connection}`;
       toast.success(
         <div>
           ✅ Транзакция отправлена!{" "}

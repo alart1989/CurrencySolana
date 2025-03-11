@@ -74,7 +74,7 @@ const TokenTransfer = () => {
   
         const signedTransaction = await signTransaction(transaction);
         const signature = await connection.sendRawTransaction(signedTransaction.serialize());
-        const txUrl = `https://explorer.solana.com/tx/${signature}?cluster=devnet`;
+        const txUrl = `https://explorer.solana.com/tx/${signature}?cluster=${connection}`;
   
         toast.success(
           <div>
@@ -114,7 +114,7 @@ const TokenTransfer = () => {
     const signedTransaction = await signTransaction(transaction);
     const signature = await connection.sendRawTransaction(signedTransaction.serialize());
 
-    const txUrl = `https://explorer.solana.com/tx/${signature}?cluster=devnet`;
+    const txUrl = `https://explorer.solana.com/tx/${signature}?cluster=${connection}`;
     toast.success(
       <div>
         ✅ Транзакция на создание ATA отправлена!{" "}
@@ -141,7 +141,7 @@ const TokenTransfer = () => {
         const signedTransaction = await signTransaction(transaction);
 
         const signature = await connection.sendRawTransaction(signedTransaction.serialize());  
-        const txUrl = `https://explorer.solana.com/tx/${signature}?cluster=devnet`;
+        const txUrl = `https://explorer.solana.com/tx/${signature}?cluster=${connection}`;
         toast.success(
           <div>
             ✅ Транзакция отправлена!{" "}
