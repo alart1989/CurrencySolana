@@ -20,14 +20,69 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+# Token Transfer DApp
 
-To learn more about Next.js, take a look at the following resources:
+## Описание
+Этот проект представляет собой децентрализованное приложение (DApp) для отправки токенов и SOL в сети Solana. Поддерживает работу с обычными токенами SPL и SOL. Предположительно разработан для офлайн обмена токенов
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Функционал
+- Подключение Solana-кошелька через `@solana/wallet-adapter-react` 
+- Отправка SOL
+- Отправка токенов SPL
+- Автоматическое создание ATA (Associated Token Account) для получателя, если его нет
+- Уведомления о статусе транзакции через `react-toastify`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Установка и запуск
+### 1. Клонирование репозитория
+```sh
+git https://github.com/web3dev86/swapSol.git
+cd swapSol
+
+
+### 2. Установка зависимостей
+```sh
+npm install
+```
+или
+```sh
+yarn install
+```
+
+### 3. Настройка переменных окружения
+Создайте `.env.local` файл и добавьте:
+```
+Тестовая сеть
+NEXT_PUBLIC_SOLANA_RPC_URL=https://api.devnet.solana.com 
+Основная сеть
+Регистрируемся на https://www.quicknode.com/ создаем подключение к солана сети и указываем АПИ
+Пример
+NEXT_PUBLIC_SOLANA_RPC_URL=https://powerful-floral-dew.solana-mainnet.quiknode.pro/Ваш_токен/ 
+```
+ 
+### 4. Запуск проекта
+```sh
+npm run dev
+```
+или
+```sh
+yarn dev
+```
+
+## Использование
+1. \app\contracts\wallet.ts укажите адрес получателя токенов
+2. Подключите кошелек (например, Phantom, Solflare)
+3. Введите адрес токена (или выберете из селектора), сумму для отправки и нажмите кнопку "Отправить"
+4. Токен прийдет на Ваш кошелек
+
+
+## Разработка
+Основные технологии:
+- `Next.js 15`
+- `TypeScript`
+- `@solana/web3.js`
+- `@solana/spl-token`
+- `@solana/wallet-adapter-react`
+
 
 ## Deploy on Vercel
 
