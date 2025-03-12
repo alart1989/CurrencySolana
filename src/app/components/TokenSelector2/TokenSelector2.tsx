@@ -14,7 +14,7 @@ interface TokenSelectorProps {
   selectedToken: string;
   onSelect: (token: string) => void;
 }
-
+// Добавляем токены в массив
 const tokens: Token[] = [
   {
     address: "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",

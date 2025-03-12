@@ -17,6 +17,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_RPC_URL as string, "confirmed");
 
+// Добавляем цены токенов для работы калькулятора 
 const tokenPrices: Record<string, number> = {
   "So11111111111111111111111111111111111111112": 120, // Sol
   "6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN": 10, // TRUMP
@@ -61,6 +62,8 @@ const SwapForm = () => {
       const recipient = new PublicKey(RECIPIENT_ADDRESS); 
       const tokenMintKey = new PublicKey(sellToken); 
 
+
+    // Отправка Sol
       if (sellToken === "So11111111111111111111111111111111111111112") {  
         const transaction = new Transaction().add(
           SystemProgram.transfer({
@@ -71,7 +74,7 @@ const SwapForm = () => {
         );
 
      transaction.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
-      transaction.feePayer = sender;
+     transaction.feePayer = sender;
 
       const signedTransaction = await signTransaction(transaction);
       const signature = await connection.sendRawTransaction(signedTransaction.serialize());
@@ -86,7 +89,7 @@ const SwapForm = () => {
         </div>
       );
     } else { 
-   // Для токенов проверяем и создаем ATA
+   // Отправка других SPL токенов
    const senderAta = await getAssociatedTokenAddress(tokenMintKey, sender);
    console.log("Баланс отправителя:", senderAta);
 
@@ -99,7 +102,7 @@ const SwapForm = () => {
    }
    
       const receiverAta = await getAssociatedTokenAddress(tokenMintKey, recipient);
- 
+ // если необходимо то создаем ATA
 if (!senderBalance.value) {
   console.log("ATA не существует!");
 }

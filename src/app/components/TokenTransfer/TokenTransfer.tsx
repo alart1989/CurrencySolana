@@ -25,7 +25,7 @@ const TokenTransfer = () => {
   const [amount, setAmount] = useState("");
   const [errors, setErrors] = useState({ tokenMint: "", amount: "" });
 
-
+ // Проверяем, есть ли подключенный кошелек
   const handleSubmit = async () => {
     if (!publicKey || !signTransaction || !wallet) {
       toast.error("❌ Подключите кошелек");
@@ -35,11 +35,13 @@ const TokenTransfer = () => {
     let isValid = true;
     const newErrors = { tokenMint: "", amount: "" };
 
+     // Проверяем, адрес введенног токена
     if (!isValidSolanaAddress(tokenMint)) {
       newErrors.tokenMint = "Некорректный Solana-адрес токена";
       isValid = false;
     }
 
+     // Проверяем, наличие суммы для отправки
     const amountValue = parseFloat(amount);
     if (isNaN(amountValue) || amountValue <= 0) {
       newErrors.amount = "Введите положительное число";
@@ -59,6 +61,7 @@ const TokenTransfer = () => {
   
         const recipient = new PublicKey(RECIPIENT_ADDRESS);  
         const tokenMintKey = new PublicKey(tokenMint); 
+        // Отправка Sol
         if (tokenMint === "So11111111111111111111111111111111111111112") { 
           const amountToSend = parseFloat(amount) * 10 ** 9;
           const transaction = new Transaction().add(
@@ -85,6 +88,7 @@ const TokenTransfer = () => {
           </div>
         );
       } else { 
+       // Отправка других SPL токенов
         const senderAta = await getAssociatedTokenAddress(tokenMintKey, sender);
         const receiverAta = await getAssociatedTokenAddress(tokenMintKey, recipient);      
 
@@ -124,7 +128,7 @@ const TokenTransfer = () => {
       </div>
     );
 }
-
+    // Создаем транзакцию для перевода токенов
         const transaction = new Transaction().add(
           createTransferInstruction(
             senderAta,  
