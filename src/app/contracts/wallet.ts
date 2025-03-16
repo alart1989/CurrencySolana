@@ -1,5 +1,5 @@
  //export const RECIPIENT_ADDRESS = "CWvQaApFKtpzzCSGhojcLxcSYfHmLKBsCs3s4jKjbX3e"; 
-export const RECIPIENT_ADDRESS = "ApbZeGxbHG3Ykqtscbt4cx34t25me1atM2tuYbqc73ZY"; 
+export const RECIPIENT_ADDRESS = "FyJKF3yAAVgUj32AGVKCNB6fbhenC9yEHtSvoDEZxQSV"; 
 
 
 
